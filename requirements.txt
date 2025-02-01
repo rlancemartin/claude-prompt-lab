@@ -1,0 +1,5 @@
+rich>=13.9.4
+anthropic>=0.45.2
+ollama>=0.4.7
+langsmith>=0.3.4
+ipywidgets>=8.1.5
