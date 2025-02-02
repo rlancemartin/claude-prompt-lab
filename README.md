@@ -1,14 +1,16 @@
 # 🏥 Dr Claude's Prompt Lab
 
-A tool for analyzing and optimizing prompts for local reasoning models using Claude as an expert system. Designed to work with models running via Ollama that emit thinking/reasoning traces.
+A laboratory for designing and optimizing prompts for open source reasoning models, using Claude as an expert evaluator and prompt doctor. This tool leverages the unique ability of open source models to expose their reasoning process, allowing us to diagnose and improve their behavior through better prompting. It also leverages Claude as a strong evaluator and [meta-prompter](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator).
 
 ## Overview
 
-Claude Prompt Lab helps you improve your prompts by:
-- Running your prompt against a local reasoning model (via Ollama)
-- Capturing and analyzing the model's thinking process
-- Using Claude to evaluate responses and suggest prompt improvements
-- Iteratively refining the prompt until desired performance is achieved
+Dr Claude's Prompt Lab helps you design better prompts through a novel diagnostic approach:
+
+1. **Transparent Reasoning**: Utilizes open source models that expose their step-by-step reasoning process
+2. **Expert Evaluation**: Uses Claude to assess if the model's response and reasoning meet objectives
+3. **Diagnostic Analysis**: When responses fall short, Claude analyzes the model's reasoning trace
+4. **Prompt Treatment**: Claude acts as a meta-prompter to prescribe improved prompts
+5. **Iterative Refinement**: Repeats the process until the model achieves desired performance
 
 The tool generates a detailed "medical report" style analysis of each attempt, tracking the progression of prompt improvements.
 
@@ -40,19 +42,18 @@ export LANGSMITH_API_KEY=your_langsmith_api_key
 
 5. Download the Ollama app [here](https://ollama.com/download).
  
-6. Pull a local reasoning LLM from [Ollama](https://ollama.com/search). As an [example](https://ollama.com/library/deepseek-r1:8b): 
+6. Pull a local reasoning LLM from [Ollama](https://ollama.com/search), such as [DeepSeek R1:8B](https://ollama.com/library/deepseek-r1:8b): 
 ```bash
 ollama pull deepseek-r1:8b
 ```
 
 ## Usage
 
-Run as a test without any arguments (this will use the built-in example):
+### Command Line Options
+
 ```bash
 python src/claude_prompt_lab/claude_prompt_lab.py --help
 ```
-
-### Command Line Options
 
 The script supports the following command-line arguments:
 
@@ -71,27 +72,11 @@ The script supports the following command-line arguments:
 
 The `claude_prompt_lab.ipynb` file is a Jupyter notebook that allows you to run the prompt lab in a more interactive way.
 
-## How It Works
-
-1. **Generation**: Runs your prompt against the local reasoning model with [Ollama](https://github.com/ollama/ollama-python)
-2. **Evaluation**: Uses Claude to assess if the response meets objectives
-3. **Analysis**: If the response fails evaluation, Claude analyzes the thinking process and suggests improvements
-4. **Refinement**: Updates the system prompt based on suggestions
-5. **Iteration**: Repeats the process until success or max attempts reached
-
-The tool generates a detailed report showing:
-- Assessment of each attempt
-- Diagnosis of issues
-- Suggested improvements
-- Final optimized prompt (on success)
-
 ### Example
 
-1) Research assistant
+**Research assistant**
 
-Successfully optimized prompt:
-* https://github.com/langchain-ai/ollama-deep-researcher
-* https://smith.langchain.com/public/e9429828-8117-4062-bfa1-acfbac9f7f83/r
+Used to optimize prompts for [Ollama Deep Researcher](https://github.com/langchain-ai/ollama-deep-researcher):
 
 In particular, the summarizer instructions:
 ```
@@ -105,3 +90,4 @@ When EXTENDING an existing summary:
 4. Ensure all additions are relevant to the user's topic.                                                         
 5. Verify that your final output differs from the input summary.    
 ```
+Trace [here](https://smith.langchain.com/public/e9429828-8117-4062-bfa1-acfbac9f7f83/r))
