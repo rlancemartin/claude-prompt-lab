@@ -33,41 +33,46 @@ evaluator_input_prompt = """
 
 # Meta prompt for generating improved system prompts
 meta_prompt_system = """
-<task>
-You are a prompt engineer focused on improving the system prompt for an AI reasoning model.
+You are a prompt engineering specialist who analyzes model behavior and suggests improvements. You have two distinct responsibilities:
 
-You will be given a few things:
-1. A task for the reasoning model
-2. A system prompt for the reasoning model
-3. An input to the reasoning model
-4. The output of the reasoning model
-5. The thinking of the reasoning model
-6. Feedback from a grader that the output didn't meet the task
+1. DIAGNOSTIC REPORT (For Humans):
+Analyze the model's thinking process (shown in <Reasoning Model Thinking> tags) and explain it to humans in an engaging way, using a playful medical/psychological diagnosis style.
 
-Your task it do to a few things:
-1. Analyze the reasoning model's thinking, shown in <Reasoning Model Thinking> tags
-2. Assess how the thinking process may have gotten off-track, as indicated by the <Grader Feedback> tags and the <Reasoning Model Output> tags
-3. Next, assess the system prompt used to generate the outputs, as indicated by the <Reasoning Model System Prompt> tags
-4. Assess the medical report, as indicated by the <Medical Report> tags, which will show prior attempts to improve the system prompt
-5. Finally, provide your assessment of the model's performance, as well as suggestions for improving the system prompt
+2. TECHNICAL IMPROVEMENT (For Model):
+Provide clear, simple system prompt improvements focused on guiding the model's reasoning process. This must be straightforward and direct - no metaphors or playful language.
 
-Before, you start, show your thinking process as you plan out your diagnosis and suggestions.
-<thinking>
-</thinking>
+You will analyze:
+- Task objective
+- Current system prompt
+- Model's thinking steps
+- Model's output
+- Grader feedback
+- Previous attempts (medical history)
 
-Based on your analysis, please provide:
+Please provide your response using these tags:
 
-1. A brief assessment of the reasoning model's thinking process
-2. List your suggestions for improving the system prompt
-3. Then provide an improved version of the system prompt that would help the reasoning model provide better responses
+<assessment>
+Write a playful medical-style analysis of the model's thinking process and behavior. Be creative and humorous here. Focus on explaining the reasoning trace, shown in <Reasoning Model Thinking> tags, and where things went wrong.
+</assessment>
 
-Tone:
-Provide you assessment somewhat informally, as if you are a doctor or psychologist but also joking slightly.
+<suggestions>
+List specific, concrete suggestions for improving the prompt. Focus on:
+- Clarifying reasoning steps
+- Simplifying instructions
+- Removing sources of confusion
+Keep these direct and implementation-focused.
+</suggestions>
 
-Please format your response using these XML tags:
-<assessment>Your assessment here</assessment>
-<suggestions>Your suggestions here</suggestions>
-<improved_prompt>Your improved system prompt here</improved_prompt>"""
+<improved_prompt>
+Provide a clear, simple system prompt that implements your suggestions. This should be:
+- Direct and unambiguous
+- Free of metaphors or playful language
+- Focused on guiding reasoning steps
+- Easy for the model to follow
+</improved_prompt>
+
+Remember: Keep the playful tone ONLY in the assessment section. The improved prompt must be simple and clear.
+"""
 
 # Input to the meta prompt
 meta_prompt_input = """

@@ -38,7 +38,7 @@ def run_generator(model: str,
         thinking_steps (list[str]): The model's thinking steps"""
 
   # Call Ollama 
-  with console.status("[bold yellow]🤔 Generating reasoning model response...[/bold yellow]"):
+  with console.status("[bold green]🤔 Generating reasoning model response...[/bold green]"):
     response: ChatResponse = chat(model=model, messages=[
         {
         'role': 'system',
@@ -62,6 +62,13 @@ def run_generator(model: str,
       think_content, chat_message = chat_message[len(think_tag):].split(think_end_tag, 1)
       thinking_steps = think_content.strip()  
 
+  if thinking_steps:
+      console.print("\n[bold green]Thinking Steps:[/bold green]")
+      console.print(Panel(thinking_steps, border_style="green"))
+
+  console.print("\n[bold green]Model Response:[/bold green]")
+  console.print(Panel(chat_message, border_style="green"))
+  
   return chat_message, thinking_steps
 
 @traceable
@@ -85,7 +92,7 @@ def run_evaluator(model, reasoning_model_objective, reasoning_model_input, reaso
                                                   reasoning_model_input=reasoning_model_input, 
                                                   reasoning_model_response=reasoning_model_response)
 
-    with console.status("[bold yellow]🤔 Evaluating reasoning model response...[/bold yellow]"):
+    with console.status("[bold green]🤔 Evaluating reasoning model response...[/bold green]"):
         # Run the evaluator
         message = client.messages.create(
             model=model,
@@ -145,7 +152,7 @@ def run_meta_prompt(model,
                                      medical_report=medical_report)
 
     # Response
-    with console.status("[bold yellow]🔄 Analyzing and improving prompt...[/bold yellow]"):
+    with console.status("[bold green]🔄 Analyzing and improving prompt...[/bold green]"):
         response = client.messages.create(
             model=model,
             max_tokens=4096,
@@ -169,8 +176,8 @@ def generate_report_entry(attempt, grade, parsed_response=None):
     if not grade['passed'] and parsed_response:
         report.extend([
             "\n**Specialist Notes** 🔬:",
-            f"\n- Assessment: {parsed_response['assessment']}",
-            f"\n- Treatment Plan: {parsed_response['suggestions']}",
+            f"\nAssessment: {parsed_response['assessment']}",
+            f"\nTreatment Plan: {parsed_response['suggestions']}",
             "\n**Prescribed System Prompt** 💊:",
             f"\n```\n{parsed_response['improved_prompt']}\n```"
         ])
@@ -204,18 +211,18 @@ def run_prompt_lab(reasoning_model: str,
     # Initialize the medical report
     medical_report = ["# 🏥 Dr Claude's Prompt Lab: Report", 
                     f"\n## Patient Information: {reasoning_model}",
-                    f"\n- **Treatment Objective**: {reasoning_model_objective}",
+                    f"\n**Treatment Objective**: {reasoning_model_objective}",
                     "\n## Treatment History"]
      
     attempt = 1
     
     # Run the loop
     while attempt <= max_attempts:
-        console.print(f"\n[bold cyan]🔄 Attempt {attempt}/{max_attempts}[/bold cyan]")
+        console.print(f"\n[bold green]🔄 Attempt {attempt}/{max_attempts}[/bold green]")
 
         # Step 1: Run generator
-        console.print("[yellow]Step 1: Running generator with system prompt:[/yellow]")
-        console.print(Panel(reasoning_model_system_prompt, title="Current System Prompt", border_style="blue"))
+        console.print("[green]Step 1: Running generator with system prompt:[/green]")
+        console.print(Panel(reasoning_model_system_prompt, title="Current System Prompt", border_style="green"))
        
         # Run the generator
         reasoning_model_response, reasoning_model_thinking = run_generator(
@@ -228,7 +235,7 @@ def run_prompt_lab(reasoning_model: str,
         
         # Grade the response
         # Step 2: Grade the response
-        console.print("\n[yellow]Step 2: Evaluating response...[/yellow]")
+        console.print("\n[green]Step 2: Evaluating response...[/green]")
         grade = run_evaluator(model=claude_model, reasoning_model_objective=reasoning_model_objective, reasoning_model_input=reasoning_model_input, reasoning_model_response=reasoning_model_response)
 
         status = "✅ PASSED" if grade['passed'] else "❌ FAILED"
@@ -238,7 +245,7 @@ def run_prompt_lab(reasoning_model: str,
         # Generate report entry
         parsed_response = None
         if not grade['passed']:
-            console.print("\n[yellow]Step 3: Response failed evaluation, running meta-prompt analysis...[/yellow]")
+            console.print("\n[green]Step 3: Response failed evaluation, running meta-prompt analysis...[/green]")
             reasoning_model_diagnosis = run_meta_prompt(
                 model=claude_model,
                 reasoning_model_objective=reasoning_model_objective, 
@@ -250,7 +257,7 @@ def run_prompt_lab(reasoning_model: str,
                 medical_report=medical_report
             )
 
-            console.print("\n[yellow]Step 4: Extracting improvements from analysis...[/yellow]")
+            console.print("\n[green]Step 4: Extracting improvements from analysis...[/green]")
             parsed_response = {
                 'assessment': extract_xml(reasoning_model_diagnosis, 'assessment'),
                 'suggestions': extract_xml(reasoning_model_diagnosis, 'suggestions'),
@@ -259,7 +266,7 @@ def run_prompt_lab(reasoning_model: str,
             
             # Update system prompt for next attempt
             # Step 5: Update system prompt for next attempt
-            console.print("\n[yellow]Step 5: Updating system prompt for next attempt...[/yellow]")
+            console.print("\n[green]Step 5: Updating system prompt for next attempt...[/green]")
             reasoning_model_system_prompt = parsed_response['improved_prompt']
         
         # Add to medical report
@@ -361,7 +368,7 @@ if __name__ == "__main__":
     have improved models' ability to break down complex problems into smaller steps."""
     
     # Print header
-    console.print("\n[bold blue]🧪 Starting Claude's Prompt Lab...[/bold blue]\n", style="bold")
+    console.print("\n[bold green]🧪 Starting Claude's Prompt Lab...[/bold green]\n", style="bold")
     
     # Run the prompt lab
     report = run_prompt_lab(
