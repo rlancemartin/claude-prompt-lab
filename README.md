@@ -1,7 +1,7 @@
-# 🏥 Dr Claude's Prompt Lab
+# 🧪 Dr Claude's Prompt Lab
 
-A laboratory for designing and optimizing prompts for open source reasoning models, using Claude as an expert evaluator and prompt doctor. This tool leverages the unique ability of open source models to expose their reasoning process, allowing us to diagnose and improve their behavior through better prompting. It also leverages Claude as a strong evaluator and [meta-prompter](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator).
-
+Prompt engineering LLMs is a challenge. A new class of open source reasoning LLMs, like [DeepSeek R1](https://github.com/deepseek-ai/DeepSeek-R1/blob/main/DeepSeek_R1.pdf), expose their step-by-step thinking process via "thoughts" emitted during inference. This repo explores an evaluator-optimizer approach where Claude acts as a "prompt doctor", analyzing mistakes in the step-by-step thinking process and prescribing improved prompts as treatment. It focuses on (1) distilled reasoning models (via Ollama) that benefit from careful prompting and uses (2) Claude to evaluate reasoning model performance, diagnose where reasoning goes wrong, suggest targeted prompt improvements, and iteratively refine the prompt.
+ 
 ![dr_claude](https://github.com/user-attachments/assets/113460a2-6aa7-4afa-b12f-02b3eb321d16)
 
 ## Overview
@@ -72,9 +72,23 @@ The script supports the following command-line arguments:
 
 ### Jupyter Notebook
 
-The `claude_prompt_lab.ipynb` file is a Jupyter notebook that allows you to run the prompt lab in a more interactive way.
+`src/claude_prompt_lab/claude_prompt_lab.ipynb` allows you to run the prompt lab in a notebook.
 
-### Example
+## How It Works
+
+**Transparent Reasoning**
+
+Open source models expose their step-by-step reasoning process. For example, the [DeepSeek R1 model](https://github.com/deepseek-ai/DeepSeek-R1/blob/main/DeepSeek_R1.pdf) and its [distilled versions](https://ollama.com/library/deepseek-r1) emit reasoning traces using the `<think>` tag. Here, we focus locally running distilled reasoning models, because they can be tricker to prompt due to their smaller size / lower capacity.
+
+**Expert Evaluation**
+
+The prompt lab is set up as an **[evaluator-optimizer workflow](https://www.anthropic.com/research/building-effective-agents)**, with Claude using **[tool calling](https://docs.anthropic.com/en/docs/build-with-claude/tool-use#json-mode)** to return a structured evaluation of the model's response and reasoning as JSON object. 
+
+**Diagnostic Analysis**: 
+
+When responses fail the evaluation, Claude analyzes the model's reasoning trace jointly with the input, output, current system prompt, and overall objective to diagnose the issue. We provide a [meta-prompt](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator) that [instructs Claude](https://github.com/aws-samples/claude-prompt-generator/blob/main/src/metaprompt.txt) to generate a new system prompt that will improve the distilled reasoning model's behavior. This workflow proceeds for a fixed number of attempts or until evaluation is passed.
+
+## Example
 
 **Research assistant**
 
@@ -92,4 +106,4 @@ When EXTENDING an existing summary:
 4. Ensure all additions are relevant to the user's topic.                                                         
 5. Verify that your final output differs from the input summary.    
 ```
-Trace [here](https://smith.langchain.com/public/e9429828-8117-4062-bfa1-acfbac9f7f83/r))
+Trace [here](https://smith.langchain.com/public/e9429828-8117-4062-bfa1-acfbac9f7f83/r)
