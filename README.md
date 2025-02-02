@@ -84,3 +84,24 @@ The tool generates a detailed report showing:
 - Diagnosis of issues
 - Suggested improvements
 - Final optimized prompt (on success)
+
+### Example
+
+1) Research assistant
+
+Successfully optimized prompt:
+* https://github.com/langchain-ai/ollama-deep-researcher
+* https://smith.langchain.com/public/e9429828-8117-4062-bfa1-acfbac9f7f83/r
+
+In particular, the summarizer instructions:
+```
+When EXTENDING an existing summary:                                                                                                                 
+1. Read the existing summary and new search results carefully.                                                    
+2. Compare the new information with the existing summary.                                                         
+3. For each piece of new information:                                                                             
+    a. If it's related to existing points, integrate it into the relevant paragraph.                               
+    b. If it's entirely new but relevant, add a new paragraph with a smooth transition.                            
+    c. If it's not relevant to the user topic, skip it.                                                            
+4. Ensure all additions are relevant to the user's topic.                                                         
+5. Verify that your final output differs from the input summary.    
+```
