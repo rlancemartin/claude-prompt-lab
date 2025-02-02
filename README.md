@@ -2,6 +2,8 @@
 
 A laboratory for designing and optimizing prompts for open source reasoning models, using Claude as an expert evaluator and prompt doctor. This tool leverages the unique ability of open source models to expose their reasoning process, allowing us to diagnose and improve their behavior through better prompting. It also leverages Claude as a strong evaluator and [meta-prompter](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator).
 
+![dr_claude](https://github.com/user-attachments/assets/113460a2-6aa7-4afa-b12f-02b3eb321d16)
+
 ## Overview
 
 Dr Claude's Prompt Lab helps you design better prompts through a novel diagnostic approach:
