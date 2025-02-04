@@ -50,6 +50,15 @@ Test it on the default example in `src/claude_prompt_lab/claude_prompt_lab.py`:
 python src/claude_prompt_lab/claude_prompt_lab.py 
 ```
 
+You will see the reasoning model start thinking and the provided system prompt:
+![Screenshot 2025-02-03 at 7 53 49 PM](https://github.com/user-attachments/assets/d096287f-4cd6-4aae-aac7-7358e30fc74b)
+
+You will then see the result of evaluation:
+![Screenshot 2025-02-03 at 7 54 20 PM](https://github.com/user-attachments/assets/ab93608b-1087-47eb-bd3a-e85a291e5e7b)
+
+The cycle will repeast until evaluation passes or a fixed number of tries is reached, and a report will be provided at the end:
+![Screenshot 2025-02-03 at 7 54 39 PM](https://github.com/user-attachments/assets/3054979a-bc31-4894-97c0-edc6a7819a9b)
+
 ## Running your own tests
 
 The tool can be run either through the command line interface or using the Jupyter notebook.
