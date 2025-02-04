@@ -1,28 +1,18 @@
 # 🧪 Dr Claude's Prompt Lab
 
-Prompt engineering LLMs is a challenge. A new class of open source reasoning LLMs, like [DeepSeek R1](https://github.com/deepseek-ai/DeepSeek-R1/blob/main/DeepSeek_R1.pdf), expose their step-by-step thinking process via "thoughts" emitted during inference. This repo explores an evaluator-optimizer approach where Claude acts as a "prompt doctor", analyzing mistakes in the step-by-step thinking process and prescribing improved prompts as treatment. It focuses on (1) distilled reasoning models (via Ollama) that benefit from careful prompting and uses (2) Claude to evaluate reasoning model performance, diagnose where reasoning goes wrong, suggest targeted prompt improvements, and iteratively refine the prompt.
+Prompt engineering LLMs is a challenge. A new class of open source reasoning LLMs, like [DeepSeek R1](https://github.com/deepseek-ai/DeepSeek-R1/blob/main/DeepSeek_R1.pdf), expose their step-by-step thinking process via "thoughts" emitted during inference. This repo aims to use this step-by-step thinking process to diagnose where reasoning goes wrong and prescribe improved prompts as treatment.
+
+It uses an evaluator-optimizer workflow where Claude acts as a "prompt doctor", first evaluating whether the reasoning model's response satisfies the user's objective. If not, Claude examines the model's step-by-step thinking process to diagnose where reasoning may have gone wrong and suggests an improved prompt as treatment. The process repeats until the model passes the evaluation or a fixed number of attempts is reached. The tool generates a report summarizing the progression of prompt treatments.
  
 ![dr_claude](https://github.com/user-attachments/assets/113460a2-6aa7-4afa-b12f-02b3eb321d16)
-
-## Overview
-
-Dr Claude's Prompt Lab helps you design better prompts through a novel diagnostic approach:
-
-1. **Transparent Reasoning**: Utilizes open source models that expose their step-by-step reasoning process
-2. **Expert Evaluation**: Uses Claude to assess if the model's response and reasoning meet objectives
-3. **Diagnostic Analysis**: When responses fall short, Claude analyzes the model's reasoning trace
-4. **Prompt Treatment**: Claude acts as a meta-prompter to prescribe improved prompts
-5. **Iterative Refinement**: Repeats the process until the model achieves desired performance
-
-The tool generates a detailed "medical report" style analysis of each attempt, tracking the progression of prompt improvements.
 
 ## Installation
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/dr-claudes-prompt-lab.git
-cd dr-claudes-prompt-lab
+git https://github.com/rlancemartin/claude-prompt-lab.git
+cd claude-prompt-lab
 ```
 
 2. (Recommended) Create a virtual environment:
@@ -36,10 +26,9 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Ensure you have API keys for Claude and optionally LangSmith for tracing.
+4. Ensure you have API key for Claude:
 ```bash
 export ANTHROPIC_API_KEY=your_anthropic_api_key
-export LANGSMITH_API_KEY=your_langsmith_api_key
 ```
 
 5. Download the Ollama app [here](https://ollama.com/download).
@@ -49,7 +38,21 @@ export LANGSMITH_API_KEY=your_langsmith_api_key
 ollama pull deepseek-r1:8b
 ```
 
-## Usage
+## Quickstart
+
+Test it on the default example in `src/claude_prompt_lab/claude_prompt_lab.py`:
+* Ollama model: [DeepSeek R1:8B](https://ollama.com/library/deepseek-r1:8b)
+* Claude model: [Claude 3.5 Sonnet](https://docs.anthropic.com/en/docs/models/sonnet)
+* Objective: Test the ability of the reasoning model to update a summary with new search results.
+* See the specific prompts in `src/claude_prompt_lab/prompts.py`.
+
+```bash
+python src/claude_prompt_lab/claude_prompt_lab.py 
+```
+
+## Running your own tests
+
+The tool can be run either through the command line interface or using the Jupyter notebook.
 
 ### Command Line Options
 

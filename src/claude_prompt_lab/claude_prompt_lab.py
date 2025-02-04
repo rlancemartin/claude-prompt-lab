@@ -1,7 +1,6 @@
 import argparse
 
 from anthropic import Anthropic
-from langsmith import traceable
 from ollama import chat, ChatResponse
 
 from rich.console import Console
@@ -17,7 +16,6 @@ client = Anthropic()
 # Define the console
 console = Console()
 
-@traceable
 def run_generator(model: str, 
                 model_input: str, 
                 system_prompt: str, 
@@ -71,7 +69,6 @@ def run_generator(model: str,
   
   return chat_message, thinking_steps
 
-@traceable
 def run_evaluator(model, reasoning_model_objective, reasoning_model_input, reasoning_model_response):
     """Evaluates an AI model's response against a given objective using Claude.
     
@@ -113,7 +110,6 @@ def run_evaluator(model, reasoning_model_objective, reasoning_model_input, reaso
     console.print("[bold green]✓[/bold green] Reasoning model response evaluated")
     return message.content[0].input
 
-@traceable
 def run_meta_prompt(model,
                     reasoning_model_objective, 
                     reasoning_model_system_prompt, 
